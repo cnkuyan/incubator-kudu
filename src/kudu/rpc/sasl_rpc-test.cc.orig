@@ -137,30 +137,6 @@ TEST_F(TestSaslRpc, TestPlainNegotiation) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-
-static void RunGSSAPINegotiationServer(Socket* conn) {
-  SaslServer sasl_server(kSaslAppName, conn->GetFd());
-  CHECK_OK(sasl_server.Init(kSaslAppName));
-  CHECK_OK(sasl_server.EnableGSSAPI());
-  CHECK_OK(sasl_server.Negotiate());
-}
-
-static void RunGSSAPINegotiationClient(Socket* conn) {
-  SaslClient sasl_client(kSaslAppName, conn->GetFd());
-  sasl_client.set_server_fqdn("todd-thinkPad-T540p");
-  CHECK_OK(sasl_client.Init(kSaslAppName));
-  CHECK_OK(sasl_client.EnableGSSAPI());
-  CHECK_OK(sasl_client.Negotiate());
-}
-
-// Test SASL negotiation using the PLAIN mechanism over a socket.
-TEST_F(TestSaslRpc, TestGSSAPINegotiation) {
-  RunNegotiationTest(RunGSSAPINegotiationServer, RunGSSAPINegotiationClient);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-
-
 static void RunPlainFailingNegotiationServer(Socket* conn) {
   SaslServer sasl_server(kSaslAppName, conn->GetFd());
   gscoped_ptr<AuthStore> authstore(new AuthStore());

@@ -37,7 +37,6 @@ namespace rpc {
 
 const char* const kSaslMechAnonymous = "ANONYMOUS";
 const char* const kSaslMechPlain = "PLAIN";
-const char* const kSaslMechGSSAPI = "GSSAPI";
 
 // Output Sasl messages.
 // context: not used.

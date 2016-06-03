@@ -81,11 +81,6 @@ Status SaslServer::EnablePlain(gscoped_ptr<AuthStore> authstore) {
   return Status::OK();
 }
 
-Status SaslServer::EnableGSSAPI() {
-  DCHECK_EQ(server_state_, SaslNegotiationState::INITIALIZED);
-  return helper_.EnableGSSAPI();
-}
-
 SaslMechanism::Type SaslServer::negotiated_mechanism() const {
   DCHECK_EQ(server_state_, SaslNegotiationState::NEGOTIATED);
   return negotiated_mech_;
@@ -204,14 +199,6 @@ Status SaslServer::Negotiate() {
       }
     }
   }
-
-  const char* username = NULL;
-  int rc = sasl_getprop(sasl_conn_.get(), SASL_USERNAME, reinterpret_cast<const void**>(&username));
-  if (rc != SASL_OK || username == NULL) {
-    LOG(FATAL) << "TODO: no username on authorized connection";
-  }
-
-  LOG(INFO) << "authorized username: " << username;
 
   TRACE("SASL Server: Successful negotiation");
   server_state_ = SaslNegotiationState::NEGOTIATED;
